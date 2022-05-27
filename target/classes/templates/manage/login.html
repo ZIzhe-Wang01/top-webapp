@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Login</title>
+    <link rel="stylesheet" th:href="@{/manage/public/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/manage/public/css/font-awesome.css}">
+    <style>
+        body {
+            height: 100vh;
+            background: linear-gradient(to right, #39f, #69f, #ccf);
+        }
+
+        .box {
+            margin: 0 auto;
+            width: 70%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container box">
+        <div class="h1 text-center text-white mb-3">Manager Login</div>
+        <span th:text="${error}"></span>
+        <div class="row align-items-center">
+            <div class="col-5">
+                <img width="100%" th:src="@{/manage/public/imgs/book_icon.svg}" alt="">
+            </div>
+            <form class="col-7 pt-2 pb-2 text-white" action="/manage/login" method="post">
+                <div class="form-group d-flex justify-content-between align-items-center">
+                    <span class="col-2 font-weight-bold">Username: </span>
+                    <input type="text" required autocomplete="off" class="form-control"  name="username" value="">
+                </div>
+                <div class="form-group d-flex justify-content-between align-items-center">
+                    <span class="col-2 font-weight-bold">Password: </span>
+                    <input type="password" required autocomplete="off" class="form-control" name="password" value="">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary col-12">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch TopApplication",
+            "request": "launch",
+            "mainClass": "com.top.TopApplication",
+            "projectName": "top"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TopApplication<TieBa>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.top.TopApplication",
+            "projectName": "TieBa",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

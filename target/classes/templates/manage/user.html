@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage User</title>
+    <link rel="stylesheet" th:href="@{/manage/public/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/manage/public/css/font-awesome.css}">
+
+    <style>
+        .vh-100 {
+            min-height: 100vh;
+        }
+
+        .vh-100 a {
+            color: #fff;
+            background: #3498db;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .vh-100 a:hover {
+            background: #2980b9;
+        }
+
+        .vh-100 .active a:hover:after {
+            transform: skew(0);
+        }
+
+        .vh-100 .active a {
+            background: #2270a3;
+        }
+
+        .vh-100 .active a:after {
+            content: '';
+            position: absolute;
+            right: 2%;
+            bottom: -11px;
+            width: 20px;
+            height: 20px;
+            transform: skew(20deg);
+            background: #528fdf;
+            transition: .33s ease;
+        }
+
+        .introduce {
+            display: block;
+            width: 120px;
+            height: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            font-size: .5rem;
+        }
+    </style>
+</head>
+<script th:if="${session.manage == null}">
+    window.location = "/manage/toLogin";
+</script>
+<body>
+<div class="container col-12 p-0">
+    <!--import header-->
+    <div th:replace="/manage/header">
+    </div>
+
+    <div class="row col-12 p-0">
+        <!--import navigation bar-->
+        <div th:replace="/manage/nav"></div>
+        <div class="list col-10">
+            <div class="menu pt-4 pb-4">
+            </div>
+
+            <div class="con">
+                <!--List-->
+                <table class="table table-bordered table-hover text-center">
+                    <tr class="success">
+                        <th>ID</th>
+                        <th>Nickname</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Introduction</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr th:each="user,index:${userPb.list}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.nickname}"></td>
+                        <td th:text="${user.sex}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.introduce}"></td>
+                        <td>
+                            <a class="btn btn-danger text-white" th:onclick="'javascript:del('+${user.id}+')'">Delete</a>
+                        </td>
+
+                    </tr>
+                </table>
+                
+                <!--pagination-->
+                <div class="pages">
+                    <ul class="pagination">
+                        <li th:if="${userPb.currentPage == 1}" class="page-item disabled">
+                            <a class="page-link"
+                               th:href="'/manage/findUserPage/'+${userPb.currentPage - 1}+'/10'">&laquo;</a>
+                        </li>
+                        <li th:if="${userPb.currentPage != 1}" class="page-item">
+                            <a class="page-link"
+                               th:href="'/manage/findUserPage/'+${userPb.currentPage - 1}+'/10'">&laquo;</a>
+                        </li>
+                        <th:block th:if="${userPb.totalPage != 0}" th:each="i:${#numbers.sequence(1,userPb.totalPage)}">
+                            <li th:if="${userPb.currentPage == i}" class="page-item active">
+                                <a class="page-link"
+                                   th:href="'/manage/findUserPage/'+${i}+'/10'" th:text="${i}"></a>
+                            </li>
+                            <li th:if="${userPb.currentPage != i}" class="page-item">
+                                <a class="page-link"
+                                   th:href="'/manage/findUserPage/'+${i}+'/10'" th:text="${i}"></a>
+                            </li>
+                        </th:block>
+
+                        </li>
+                        <li th:if="${userPb.currentPage == userPb.totalPage}" class="page-item disabled">
+                            <a class="page-link"
+                               th:href="'/manage/findUserPage/'+${userPb.currentPage + 1}+'/10'">&raquo;</a>
+                        </li>
+                        <li th:if="${userPb.currentPage != userPb.totalPage}" class="page-item">
+                            <a class="page-link"
+                               th:href="'/manage/findUserPage/'+${userPb.currentPage + 1}+'/10'">&raquo;</a>
+                        </li>
+                        <span th:text="|${userPb.total} Users,${userPb.currentPage}/${userPb.totalPage} Pages|"
+                              style="font-size: 25px;margin-left: 5px;"></span>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/manage/public/js/jq3.4.js}"></script>
+<script type="text/javascript" th:src="@{/manage/public/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/manage/public/js/main.js}"></script>
+
+<script>
+    function Values(id) {
+        $.get({
+            url: '/manage/findUser/' + id,
+            type: 'GET',
+            success: function (data) {
+                $('#id').val(data.obj.id);
+                $('#nickname').val(data.obj.nickname);
+                $('#email').val(data.obj.email);
+                $('#Gender').val(data.obj.sex);
+                $('#introduce').val(data.obj.introduce);
+            }
+        });
+    }
+
+    function del(id) {
+        if (confirm("Are you sure to delete this record?")) {
+            location.href = "/manage/delUser/" + id;
+        }
+    }
+</script>
+</body>
+</html>

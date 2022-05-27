@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.top.dao.mapper.UserMapper">
+
+    <!-- mapping result -->
+    <resultMap id="BaseResultMap" type="com.top.dao.entity.User">
+        <id column="id" property="id" />
+        <result column="nickname" property="nickname" />
+        <result column="sex" property="sex" />
+        <result column="introduce" property="introduce" />
+        <result column="email" property="email" />
+        <result column="password" property="password" />
+        <result column="img" property="img" />
+    </resultMap>
+
+    <!-- result column -->
+    <sql id="Base_Column_List">
+        id, nickname, sex, introduce, email, password, img
+    </sql>
+    <update id="updImg">
+        update user set img = #{filename} where id = #{id}
+    </update>
+
+</mapper>

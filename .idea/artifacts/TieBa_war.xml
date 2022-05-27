@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="TieBa:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>TieBa</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="TieBa-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="TieBa:war exploded" />
+    </root>
+  </artifact>
+</component>

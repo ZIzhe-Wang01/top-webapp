@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.top.dao.mapper.CommentMapper">
+
+    <!-- mapping result -->
+    <resultMap id="BaseResultMap" type="com.top.dao.entity.Comment">
+        <id column="id" property="id" />
+        <result column="text" property="text" />
+        <result column="img" property="img" />
+        <result column="time" property="time" />
+        <result column="user_id" property="userId" />
+        <result column="post_id" property="postId" />
+    </resultMap>
+
+    <!-- result column -->
+    <sql id="Base_Column_List">
+        id, text, img, time, user_id, post_id
+    </sql>
+
+</mapper>

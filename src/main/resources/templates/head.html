@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/res/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/res/css/global.css}">
+    <link rel="stylesheet" th:href="@{/res/css/bootstrap.css}">
+    <script th:src="@{/res/layui/layui.js}"></script>
+    <script th:src="@{/res/js/jq3.4.js}"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script th:src="@{/res/js/bootstrap.js}"></script>
+    <style>
+
+
+    </style>
+</head>
+<body>
+<div class="bg-dark">
+    <div class="">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <ul class="navbar-nav d-flex justify-content-between align-items-center col-12">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" target="_parent">TOP</a>
+                </li>
+                
+                <th:block th:if="${session.user == null}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/toLogin" target="_parent">Login</a>
+                    </li>
+                </th:block>
+
+                <th:block th:if="${session.user != null}">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/forum/findList/1/10">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="'/user/detail/'+${session.user.id}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/post/toAddPost" class="nav-link">
+                            <i class="layui-icon">&#xe61f;</i>
+                            <span>Post</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex">
+                        <div class="mt-2">
+                            <form class="input-group" action="/user/findListByNickName" method="post">
+                                <input type="text" class="form-control" name="nickname" placeholder="Enter username to follow">
+                                <div class="input-group-append">
+                                    <button class="input-group-text">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <a class="avatar nav-link" th:href="'/user/detail/'+${session.user.id}">
+                            <img th:src="'/res/images/avatar/'+${session.user.img}">
+                        </a>
+                        <div class="dropdown mr-4">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                                <cite th:text="${session.user.nickname}"></cite>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">Edit info</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#myModal2" href="#">Edit avatar</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#myModal3" href="#">Edit password</a>
+                                <a class="dropdown-item" href="/user/toLogin">
+                                    <i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>Log out
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                </th:block>
+            </ul>
+        </nav>
+    </div>
+    <th:block th:if="${session.user != null}">
+        <div>
+            <div class="model">
+                <!--  edit info  -->
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- model header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit infomation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- model body -->
+                            <div class="modal-body">
+                                <form action="/user/updUser"
+                                      method="post">
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" th:value="${session.user.id}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>nickname: </label>
+                                        <input type="text" class="form-control" name="nickname"
+                                               th:value="${session.user.nickname}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Gender: </label>
+                                        <select class="form-control" name="sex">
+                                            <th:block th:if="${session.user.sex.equals('Male')}">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </th:block>
+                                            <th:block th:if="${session.user.sex.equals('Female')}">
+                                                <option value="Female">Female</option>
+                                                <option value="Male">Male</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Personal description</label>
+                                        <textarea name="introduce" class="form-control"
+                                                  th:text="${session.user.introduce}"></textarea>
+                                    </div>
+                                    <div class="form-group" style="text-align: center">
+                                        <input class="btn btn-primary" type="submit" value="Edit"/>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">
+                                            close
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--edit avatar-->
+                <div class="modal fade" id="myModal2">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- model header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit avatar</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- model body -->
+                            <div class="modal-body">
+                                <form action="/user/upload" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" th:value="${session.user.id}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Picture: </label>
+                                        <input type="file" class="form-control" name="img">
+                                    </div>
+                                    <div class="form-group" style="text-align: center">
+                                        <input class="btn btn-primary" type="submit" value="Edit"/>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">
+                                            close
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- edit password  -->
+                <div class="modal fade" id="myModal3">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- model header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit password</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <!-- model body -->
+                            <div class="modal-body">
+                                <form id="updPassword" action="/user/updPassword"
+                                      method="post">
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" th:value="${session.user.id}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Old password: </label>
+                                        <input type="password" required id="password"
+                                               class="form-control"
+                                               name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>New password: </label>
+                                        <input type="password" required class="form-control" name="newPassword">
+                                    </div>
+                                    <div class="form-group" style="text-align: center">
+                                        <input class="btn btn-primary" type="submit" value="Edit"/>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">
+                                            close
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+</div>
+</body>
+
+</html>

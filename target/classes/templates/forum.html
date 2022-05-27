@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" th:href="@{/res/layui/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/res/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/res/css/global.css}">
+    <script th:src="@{/res/layui/layui.js}"></script>
+</head>
+<body>
+<div th:replace="head"></div>
+<div class="main mt-5 layui-clear">
+    <div class="card bg-white p-2">
+        <div class="content col-12">
+            <ul class="fly-list">
+                <th:block th:each="post:${postList.list}">
+                    <li class="fly-list-li">
+                        <a th:href="'/post/detail/'+${post.id}" class="fly-list-avatar">
+                            <img th:if="${post.img != null}" th:src="'/res/images/post/'+${post.img}"/>
+                        </a>
+                        <h2 class="fly-tip">
+                            <a th:href="'/post/detail/'+${post.id}" th:text="${post.title}"></a>
+                        </h2>
+                        <p>
+                            <span><a th:href="'/user/detail/'+${post.user.id}" th:text="${post.user.nickname}"></a></span>
+                            <span th:text="${post.time}"></span>
+                        </p>
+                    </li>
+                </th:block>
+            </ul>
+
+
+            <div class="pages">
+                <ul class="pagination">
+                    <li th:if="${postList.currentPage == 1}" class="page-item disabled">
+                        <a class="page-link"
+                           th:href="'/forum/findList/'+${postList.currentPage - 1}+'/10'">&laquo;</a>
+                    </li>
+                    <li th:if="${postList.currentPage != 1}" class="page-item">
+                        <a class="page-link"
+                           th:href="'/forum/findList/'+${postList.currentPage - 1}+'/10'">&laquo;</a>
+                    </li>
+                    <th:block th:if="${postList.totalPage != 0}"
+                              th:each="i:${#numbers.sequence(1,postList.totalPage)}">
+                        <li th:if="${postList.currentPage == i}" class="page-item active">
+                            <a class="page-link"
+                               th:href="'/forum/findList/'+${i}+'/10'" th:text="${i}"></a>
+                        </li>
+                        <li th:if="${postList.currentPage != i}" class="page-item">
+                            <a class="page-link"
+                               th:href="'/forum/findList/'+${i}+'/10'" th:text="${i}"></a>
+                        </li>
+                    </th:block>
+
+                    </li>
+                    <li th:if="${postList.currentPage == postList.totalPage}" class="page-item disabled">
+                        <a class="page-link"
+                           th:href="'/forum/findList/'+${postList.currentPage + 1}+'/10'">&raquo;</a>
+                    </li>
+                    <li th:if="${postList.currentPage != postList.totalPage}" class="page-item">
+                        <a class="page-link"
+                           th:href="'/forum/findList/'+${postList.currentPage + 1}+'/10'">&raquo;</a>
+                    </li>
+                    <span th:text="|${postList.total} Posts,${postList.currentPage}/${postList.totalPage} Pages|"
+                          style="font-size: 25px;margin-left: 5px;"></span>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

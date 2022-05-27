@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" th:href="@{/res/layui/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/res/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/res/css/global.css}">
+    <script th:src="@{/res/layui/layui.js}"></script>
+    <style>
+        body {
+            background-color: #F2F2F2;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="head"></div>
+
+<div class="fly-home mt-5 fly-panel">
+    <img th:src="'/res/images/avatar/'+${user.img}" alt="">
+    <i class="iconfont icon-renzheng" title=""></i>
+    <h1 th:text="${user.nickname}"></h1>
+    <i th:if="${user.sex.equals('Male')}" class="iconfont icon-nan"></i>
+    <i th:if="${user.sex.equals('Female')}" class="iconfont icon-nv"></i>
+    <p class="fly-home-sign" th:text="${user.introduce}"></p>
+
+    <div class="fly-sns" data-user="">
+        <th:block th:if="${session.user.id != user.id}" th:each="follow,i:${session.user.list}">
+            <a th:if="${user.id == follow.followId}" id="tofollow"
+               th:href="'/user/delFollow/'+${session.user.id}+'/'+${user.id}"
+               class="layui-btn">
+                <script>
+                    var flag = false;
+                </script>
+                Followed
+            </a>
+            <a th:if="${i.last and flag}" id="followed" th:href="'/user/addFollow/'+${session.user.id}+'/'+${user.id}"
+               class="layui-btn">
+                <script>
+                    if (!flag) {
+                        $('#followed').css('display', 'none');
+                    }
+                </script>
+                Follow
+            </a>
+        </th:block>
+    </div>          
+</div>
+
+<div class="layui-container mt-3">
+    <div class="row">
+        <div class="col-6">
+            <div class="p-2 bg-white">
+                <div class="fly-panel">
+                    <h3 class="pl-0 fly-panel-title bg-white">MY POST</h3>
+                    <div class="">
+                        <th:block th:each="post:${postList}">
+                            <a th:href="'/post/detail/'+${post.id}"
+                               class="p-2 mb-3 d-flex justify-content-between badge badge-success jie-title">
+                                <span th:text="${post.title}"></span>
+                                <i th:text="${post.time}"></i>
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 p-0">
+            <div class="p-2 bg-white">
+                <div class="fly-panel">
+                    <h3 class="fly-panel-title bg-white pl-0">MY FOLLOW</h3>
+                    <div class="flex">
+                        <th:block th:each="follow:${followList}">
+                            <a class="badge p-2 mb-3 badge-info mr-2 d-flex align-items-center justify-content-between"
+                               th:href="'/user/detail/'+${follow.followId}">
+                                <span th:text="${follow.follow.nickname}"></span>
+                                <p class="mb-0" th:text="${follow.follow.email}"></p>
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

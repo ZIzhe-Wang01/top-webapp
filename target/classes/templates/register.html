@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/res/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/res/css/global.css}">
+    <script th:src="@{/res/layui/layui.js}"></script>
+</head>
+
+
+<body>
+<div th:replace="head"></div>
+<div class="main  mt-5  layui-clear">
+    <div class="layui-container fly-marginTop">
+        <div class="fly-panel fly-panel-user" pad20="">
+            <div class="layui-tab layui-tab-brief" lay-filter="user">
+                <ul class="layui-tab-title">
+                    <li>
+                        <a href="/user/toLogin">Login</a>
+                    </li>
+                    <li class="layui-this">Register</li>
+                </ul>
+                <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-form layui-form-pane">
+                            <form action="/user/register" method="post">
+                                <span style="color: red" th:text="${error}"></span>
+                                <div class="layui-form-item"><label for="email" class="layui-form-label">Email</label>
+                                    <div class="layui-input-inline"><input type="text" id="email" name="email"
+                                                                           placeholder="Please enter your email address" required=""
+                                                                           lay-verify="email" class="layui-input" style="width: 240px;">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item"><label for="password" class="layui-form-label">Password</label>
+                                    <div class="layui-input-inline"><input type="password" id="password"
+                                                                           placeholder="Please enter your password" name="password" required=""
+                                                                           lay-verify="required" autocomplete="off"
+                                                                           class="layui-input" style="width: 240px;"></div>
+                                </div>
+                                <div class="layui-form-item"><label for="nickname" class="layui-form-label">Nickname</label>
+                                    <div class="layui-input-inline"><input type="text" id="nickname"
+                                                                           placeholder="Please enter your nickname" name="nickname"
+                                                                           required="" lay-verify="required"
+                                                                           autocomplete="off" class="layui-input" style="width: 240px;"></div>
+                                </div>
+                                <div class="layui-form-item"><label for="sex" class="layui-form-label">Gender</label>
+                                    <div class="layui-input-inline" style="width: 240px;">
+                                        <select name="sex" class="layui-select" id="sex">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="layui-form-item">
+                                    <button class="layui-btn" lay-filter="*" lay-submit="">Register</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
